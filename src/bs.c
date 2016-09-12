@@ -64,8 +64,53 @@ char *bsSubstr(char *orig, uint32_t start, int32_t end)
 
 char *bsRandom(uint32_t len, char *suffix)
 {
-	char table[62] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
-			  'a', 'b', 'c', 'd'
-		
-		};
+	char table[62] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+			  'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
+			  'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+			  'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D',
+			  'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
+			  'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
+			  'Y', 'Z'};
+	char *bs = malloc(sizeof(char) * (BS_HEADER_LEN + len + 1));
+	assert(bs);
+	bs += BS_HEADER_LEN;
+	bsSetLen(bs, len);
+	
+	for (uint32_t i = 0; i < len; i++) {
+		bs[i] = table[rand() % sizeof(table)];
+	}
+
+	if (suffix)
+		bsConcat(bs, suffix);
+
+	return bs;
+}
+
+char *bsEscape(char *bs)
+{
+	char *copy = bsConstructor(bs);
+	char *res = bsConstructor("");
+
+	char *c = copy;
+	char *p = copy;
+
+	while(*c != '\0') {
+		if (*c == '<') {
+			*c = '\0';
+			bsLCat(&res, p);
+			bsLCat(&res, "&lt;");
+			p = c + 1;
+		} else if (*c == '>') {
+			*c = '\0';
+			bsLCat(&res, p);
+			bsLCat(&res, "&gt;");
+			p = c + 1;
+		}
+		c++;
+	}
+
+	bsLCat(&res, p);
+	bsDel(copy);
+
+	return res;
 }
