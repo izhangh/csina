@@ -41,6 +41,7 @@ void listDel(ListNode *node)
 	} while(node);
 }
 
+/* list iteration */
 IterationResult listForEach(ListNode *node, ListIterator iteratior)
 {
 	if (!node)
