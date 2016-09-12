@@ -27,7 +27,7 @@ char *bsNewLen(char *buf, size_t len)
 	return bs;
 }
 
-char *bsCat(char *bs1, char *bs2)
+char *bsConcat(char *bs1, char *bs2)
 {
 	size_t len1 = bsGetLen(bs1);
 	size_t len2 = bsGetLen(bs2);
@@ -42,4 +42,30 @@ char *bsCat(char *bs1, char *bs2)
 	bsSetLen(bs, len);
 
 	return bs;
+}
+
+char *bsSubstr(char *orig, uint32_t start, int32_t end)
+{
+	size_t len = bsGetLen(orig);
+	size_t newLen = (end <= 0) ? len - start + end : end - start;
+	assert(newLen > 0);
+	assert(newLen <= len);
+
+	char *bs = malloc(sizeof(char) * (BS_HEADER_LEN + newLen + 1));
+	assert(bs);
+	bs += BS_HEADER_LEN;
+
+	memcpy(bs, orig + start, newLen);
+	
+	bsSetLen(bs, newLen);
+
+	return bs;
+}
+
+char *bsRandom(uint32_t len, char *suffix)
+{
+	char table[62] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
+			  'a', 'b', 'c', 'd'
+		
+		};
 }

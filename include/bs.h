@@ -10,7 +10,7 @@
 
 char *bsConstructor(const char *);
 char *bsNewLen(char *, size_t);
-char *bsCat(char *, char *);
+char *bsConcat(char *, char *);
 char *bsSubstr(char *, uint32_t, uint32_t);
 char *bsRandom(uint32_t, char *);
 char *bsEscape(char *);
