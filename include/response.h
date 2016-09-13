@@ -23,7 +23,7 @@ Response *responseConstructor();
 Response *responseNewRedirect(char *);
 void responseSetStatus(Response *, Status);
 void responseSetBody(Response *, char *);
-void responseAddCookie(Response *, char *, char *);
+void responseAddCookie(Response *, char *, char *, char *, char *, int);
 void responseAddHeader(Response *, char *, char *);
 void responseDel(Response *);
 void responseSend(Response *, int);

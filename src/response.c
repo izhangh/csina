@@ -2,6 +2,8 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
 
 #include "bs.h"
 #include "kv.h"
@@ -92,7 +94,7 @@ void responseDel(Response *response)
 	if (response->headers)
 		kvDelList(response->headers);
 	if (response->body)
-		kvDelList(response->body);
+		bsDel(response->body);
 
 
 	free(response);
@@ -107,7 +109,7 @@ void responseSend(Response *response, int fd)
 	char sbuffer[2048];
 	
 	//headers
-	header = response->header;
+	header = response->headers;
 	while(header) {
 		sprintf(sbuffer, "%s: %s\r\n", ((KV *)header->data)->key, ((KV *)header->data)->value);
 		buffer = listConstructor(sbuffer, sizeof(char) * (strlen(sbuffer) + 1), buffer);
@@ -126,7 +128,6 @@ void responseSend(Response *response, int fd)
 		send(fd, buffer->data, strlen(buffer->data), 0);
 		buffer = buffer->next;
 	}
-
 	send(fd, "\r\n", 2, 0);
 	if (response->body)
 		send(fd, response->body, bsGetLen(response->body), 0);
