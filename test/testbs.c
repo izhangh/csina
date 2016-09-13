@@ -16,5 +16,9 @@ int main()
 	char *bs1 = bsConcat(bsConstructor("hello"), bsConstructor("world"));
 	printf("%s\n", bs1);
 
+	char *random = bsRandom(12, NULL);
+
+	printf("%s\n", random);
+
 	return 0;
 }
