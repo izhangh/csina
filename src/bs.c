@@ -114,3 +114,58 @@ char *bsEscape(char *bs)
 
 	return res;
 }
+
+
+void bsLCat(char **orig, char *s)
+{
+	size_t len0 = bsGetLen(*orig);
+	size_t lenS = strlen(s);
+	size_t len = len0 + lenS;
+
+	*orig = (char *) realloc(*orig - BS_HEADER_LEN, sizeof(char) * (BS_HEADER_LEN + len + 1));
+	assert(*orig);
+	*orig += BS_HEADER_LEN;
+	strcpy(*orig + len0, s);
+	bsSetLen(*orig, len);
+}
+
+void bsSetLen(char *bs, uint32_t len)
+{
+	*(bs + 0 - BS_HEADER_LEN) = len >> 24 & 0xFF;
+	*(bs + 1 - BS_HEADER_LEN) = len >> 16 & 0xFF;
+	*(bs + 2 - BS_HEADER_LEN) = len >>  8 & 0xFF;
+	*(bs + 3 - BS_HEADER_LEN) = len       & 0xFF;
+	*(bs + len) = '\0';
+}
+
+uint32_t bsGetLen(char *bs)
+{
+	return bs ?
+		(((char) * (bs + 0 - BS_HEADER_LEN) & 0xFF) << 24) |
+		(((char) * (bs + 1 - BS_HEADER_LEN) & 0xFF) << 16) |
+		(((char) * (bs + 2 - BS_HEADER_LEN) & 0xFF) <<  8) |
+		(((char) * (bs + 3 - BS_HEADER_LEN) & 0xFF)) : 0;
+}
+
+char *bsNewline2BR(char *bs)
+{
+	char *copy = bsConstructor(bs);
+	char *res = bsConstructor("");
+
+	char *c = copy;
+	char *p = copy;
+
+	while(*c != '\0') {
+		if (*c == '\n') {
+			*c = '\0';
+			bsLCat(&res, p);
+			bsLCat(&res, "<br>");
+			p = c + 1;
+		}
+		++c;
+	}
+	bsLCat(&res, p);
+	bsDel(copy);
+
+	return res;
+}
