@@ -11,5 +11,8 @@ $(EXEC): $(OBJS)
 
 all:$(EXEC)
 
+run:$(EXEC)
+	@./$(EXEC)
+
 clean:
 	$(RM) $(OBJS) $(EXEC)
