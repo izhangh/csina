@@ -3,10 +3,11 @@ OBJS = \
 	../src/bs.o 	\
 	../src/list.o	\
 	../src/kv.o	\
-	testbs.o
+	../src/request.o\
+	testrequest.o
 
 EXEC = \
-       testbs
+       testrequest
 
 
 $(EXEC): $(OBJS)

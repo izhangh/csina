@@ -144,17 +144,17 @@ static inline ListNode *parseHeaders(char *segment)
 }
 
 #define TOK(s, d)		\
-	segment = strtok(s, d)	\
+	segment = strtok(s, d);	\
 	if (!segment)		\
 		goto fail;
 
 Request *requestConstructor(char *buf)
 {
-	Reqeust *request = malloc(sizeof(Request));
+	Request *request = malloc(sizeof(Request));
 
 	char *segment, *bs;
 
-	request->method = UNKNOW_METHOD;
+	request->method = UNKNOWN_METHOD;
 	request->path = NULL;
 	request->uri = NULL;
 	request->queryString = NULL;
@@ -163,7 +163,7 @@ Request *requestConstructor(char *buf)
 	request->cookies = NULL;
 
 	//method
-	TOK(buff, " \t");
+	TOK(buf, " \t");
 
 	if (!strcmp(segment, "OPTIONS")) request->method = OPTIONS;
 	else if (!strcmp(segment, "GET")) request->method = GET;
@@ -182,7 +182,7 @@ Request *requestConstructor(char *buf)
 	request->uri = bsConstructor(segment);
 	//do not support hash
 	if (strchr(request->path, '#')) goto fail;
-	
+
 	//version
 	TOK(NULL, "\n");
 
@@ -193,7 +193,6 @@ Request *requestConstructor(char *buf)
 	request->headers = parseHeaders(segment);
 	//body
 	bs = kvFindList(request->headers, "Content-Type");
-
 	if (bs && !strncmp(bs, "application/x-www-form-urlencoded", 33)) {
 		segment = strtok(NULL, "\0");
 		if (!segment)
