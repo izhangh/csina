@@ -11,7 +11,7 @@
 char *bsConstructor(const char *);
 char *bsNewLen(char *, size_t);
 char *bsConcat(char *, char *);
-char *bsSubstr(char *, uint32_t, uint32_t);
+char *bsSubstr(char *, uint32_t, int32_t);
 char *bsRandom(uint32_t, char *);
 char *bsEscape(char *);
 void bsLCat(char **, char *);
