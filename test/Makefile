@@ -1,9 +1,12 @@
 CFLAGS = -Wall -g -O2 -std=c99 -I ../include
 OBJS = \
-	../src/bs.o \
-	../src/list.o\
-	testbs.o
-EXEC = testbs
+	../src/bs.o 	\
+	../src/list.o	\
+	../src/kv.o	\
+	testkv.o
+
+EXEC = \
+       testkv
 
 
 $(EXEC): $(OBJS)
