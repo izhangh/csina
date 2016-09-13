@@ -6,7 +6,7 @@
 
 typedef enum IteratonResult {
 	DONE, BREAK
-} IteratonResult;
+} IterationResult;
 
 /* list node */
 typedef struct node {
@@ -20,7 +20,7 @@ typedef bool (*ListIterator)(void *);
 
 ListNode *listConstructor(void *, size_t, ListNode *);
 ListNode *listRevers(ListNode *);
-void listDel(listNode *);
-IteratonResult listForEach(listNode *, ListIterator);
+void listDel(ListNode *);
+IterationResult listForEach(ListNode *, ListIterator);
 
 #endif

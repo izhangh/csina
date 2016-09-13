@@ -169,3 +169,8 @@ char *bsNewline2BR(char *bs)
 
 	return res;
 }
+
+void bsDel(char *bs)
+{
+	free(bs - BS_HEADER_LEN);
+}

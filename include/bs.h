@@ -1,7 +1,7 @@
 #ifndef BS_H
 #define BS_H
 
-#include <stint.h>
+#include <stdint.h>
 #include <stdlib.h>
 
 #include "list.h"
