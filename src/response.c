@@ -117,7 +117,7 @@ void responseSend(Response *response, int fd)
 	}
 
 	//status
-	sprintf(sbuffer, "HTTP/1.0 %d %s\r\n",
+	sprintf(sbuffer, "HTTP/1.1 %d %s\r\n",
 			response->status,
 			STATUSES[response->status / 100 - 1][response->status % 100]);
 

@@ -154,6 +154,11 @@ static inline int makeSocket(unsigned int port)
 		exit(1);
 	}
 
+	if (listen(sock, 1) < 0) {
+		fprintf(stderr, "error: socket failed to listen\n");
+		exit(1);
+	}
+
 	return sock;
 }
 

@@ -45,6 +45,8 @@ int main(int argc, char *argv[])
 	serverAddHandler(server, notFound);
 	serverAddStaticHandler(server);
 
+	serverRun(server);
+
 	printf("ok\n");
 
 
@@ -56,6 +58,6 @@ static Response *notFound(Request *req)
 {
 	Response *response = responseConstructor();	
 	responseSetStatus(response, NOT_FOUND);
-	responseSetBody(response, bsConstructor("ddd"));
+	responseSetBody(response, bsConstructor("<h1>404 Not Found</h1>"));
 	return response;
 }

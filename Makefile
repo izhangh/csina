@@ -1,4 +1,4 @@
-CFLAGS = -Wall -g -std=c99 -I include -O2
+CFLAGS = -O2 -g -std=c99 -Wall -I include
 
 OUT = bin
 EXEC = $(OUT)/csina
