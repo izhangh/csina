@@ -1,7 +1,7 @@
 # csina
 Yet Another Sina Weibo
 
-# useage
+## useage
 
 ```
 cd csina
