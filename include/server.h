@@ -7,7 +7,7 @@
 
 typedef struct Server {
 	unsigned int port;
-	ListNode *headers;
+	ListNode *handlers;
 } Server;
 
 

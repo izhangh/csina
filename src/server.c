@@ -43,7 +43,7 @@ typedef int sockopt_t;
 			status);			\
 	} while(0)
 
-char *METHOD[8] = {
+char *METHODS[8] = {
 	"OPTIONS", "GET", "HEAD", "POST", "PUT", "DELETE", "TRACE", "CONNECT"
 };
 
@@ -64,13 +64,13 @@ void serverDel(Server *server)
 	free(server);
 }
 
-void serverAddHandler(Server *, Handler handler)
+void serverAddHandler(Server *server, Handler handler)
 {
 	HandlerP handlerPtr = &handler;
-	server->handlers = listConstructor(handlerPtr, sizeof(HandlerP), server->handlers)
+	server->handlers = listConstructor(handlerPtr, sizeof(HandlerP), server->handlers);
 }
 
-static Request *staticHandler(Request *req)
+static Response *staticHandler(Request *req)
 {
 	ROUTE(req, "/static/");
 
@@ -80,7 +80,7 @@ static Request *staticHandler(Request *req)
 	char *filename = req->uri + 1;
 
 	struct stat sbuff;
-	if (stat(filename, &sbuff) < 0 || S_ISDIR(sbuff, st_mode))
+	if (stat(filename, &sbuff) < 0 || S_ISDIR(sbuff.st_mode))
 		return NULL;
 
 	FILE *file = fopen(filename, "r");
@@ -90,15 +90,16 @@ static Request *staticHandler(Request *req)
 	char lens[25];
 	size_t len;
 
-	fseek(file, 0 SEEK_END);
+	fseek(file, 0, SEEK_END);
 	len = ftell(file);
 	sprintf(lens, "%ld", (long int) len);
 	rewind(file);
 
 	Response *response = responseConstructor();
 	buff = malloc(sizeof(char) * len);
-	fread(buff, sizeof(char), len, file);
-	responseSetBody(response, bsNewLen(buff, len));
+	if (fread(buff, sizeof(char), len, file) > 0) {
+		responseSetBody(response, bsNewLen(buff, len));
+	}
 	fclose(file);
 	free(buff);
 
@@ -165,7 +166,7 @@ static inline void handle(Server *server, int fd, fd_set *activeFDs, struct sock
 	if ((nread = recv(fd, buff, sizeof(buff), 0)) < 0) {
 		fprintf(stderr, "error: read failed\n");
 	} else {
-		buff[nread];
+		buff[nread] = '\0';
 
 		Request *req = requestConstructor(buff);
 
@@ -208,7 +209,7 @@ void serverRun(Server *server)
 	socklen_t size = sizeof(addr);
 
 	fd_set activeFDs;
-	fd_set readFds;
+	fd_set readFDs;
 
 	FD_ZERO(&activeFDs);
 	FD_SET(sock, &activeFDs);
