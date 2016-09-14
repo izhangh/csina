@@ -1,4 +1,4 @@
-CFLAGS = -O2 -g -std=c99 -Wall -I include
+CFLAGS = -O2 -g -std=c99 -Wall -I include -D_POSIX_C_SOURCE=199506L
 
 OUT = bin
 EXEC = $(OUT)/csina
@@ -8,6 +8,7 @@ OBJS = \
        src/request.o \
        src/response.o\
        src/server.o \
+       src/template.o \
        src/bs.o \
        src/app.o
 

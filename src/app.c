@@ -6,6 +6,7 @@
 #include "bs.h"
 #include "kv.h"
 #include "server.h"
+#include "template.h"
 
 
 
@@ -58,6 +59,7 @@ static Response *notFound(Request *req)
 {
 	Response *response = responseConstructor();	
 	responseSetStatus(response, NOT_FOUND);
-	responseSetBody(response, bsConstructor("<h1>404 Not Found</h1>"));
+	Template *template = templateConstructor("public/tpls/index.html");
+	responseSetBody(response, templateRender(template));
 	return response;
 }
